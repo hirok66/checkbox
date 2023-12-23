@@ -1,0 +1,23 @@
+function restore_checked_trash(Request $request){
+        if($request->action_btn==1){
+
+
+            foreach($request->category_id as $category){
+$cat= Category::onlyTrashed()->find($category);
+                $delete_form= public_path('uploads/category/'.$category->category_image);
+                unlink($delete_form);
+                Category::onlyTrashed()->find($category)->forceDelete();
+            }
+            return back()->with('restore', 'Trash All Restore Success');
+
+        }
+        else{
+            foreach($request->category_id as $category){
+                Category::onlyTrashed()->find($category)->restore();
+            }
+            return back()->with('restore', 'Trash All Restore Success');
+        }
+
+
+
+    }
